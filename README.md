@@ -1,48 +1,35 @@
-# asset-allocation
+# Asset Allocation Calculator
 
-This template should help get you started developing with Vue 3 in Vite.
+A small web app that takes a USD amount and calculates a 70/30 BTC/ETH split using live rates from the Coinbase API.
 
-## Recommended IDE Setup
+<kbd>
+    <img src="./assetallocation.png">
+</kbd>
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Built With
 
-## Recommended Browser Setup
+Vue 3, TypeScript, Vite
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Getting Started
 
-## Type Support for `.vue` Imports in TS
+To run locally, run the following:
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
+npm install
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+and open the `localhost` link shared by vite in the terminal.
 
-```sh
-npm run build
-```
+## How it works
 
-### Lint with [ESLint](https://eslint.org/)
+- A user enters a USD amount to invest
+- The app calculates the crypto split based on exchanges rates from Coinbase
+- A refresh button allows users to get the most up-to-date rate, anytime.
 
-```sh
-npm run lint
-```
+## Future features
+
+In the scenario that this project develops further, I would add:
+
+- Editable percentages so users can customize the ratio
+- Support for additional cryptocurrencies pulled from the Coinbase API
