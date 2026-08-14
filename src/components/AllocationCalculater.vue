@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { formatTime } from '@/utils/format.ts'
+import { formatTime } from '@/utils/format'
 import CryptoItem from './CryptoItem.vue'
-import { useDebounced } from '@/composables/useDebounced.ts'
+import { useDebounced } from '@/composables/useDebounced'
 
 const CRYPTOS = [
   { currency: 'BTC', ratio: 0.7 },
@@ -74,43 +74,46 @@ const allocations = computed(() => {
 
 <template>
   <main>
-    <h1>Asset Allocation Split</h1>
-    <h2>70% BTC/30% ETH</h2>
-
-    <div class="input-container">
-      <label for="usd-input">USD to invest</label>
-      <div class="usd-input-wrapper">
-        <span class="input-prefix">$</span>
-        <input
-          class="usd-input"
-          v-model="usd"
-          id="usd-input"
-          type="number"
-          inputmode="decimal"
-          min="0"
-          placeholder="0"
-        />
+    <div class="col">
+      <div class="header-container">
+        <h1>Allocation Calculator</h1>
+        <p>70% BTC / 30% ETH</p>
       </div>
-    </div>
 
-    <div class="status-container">
-      <p v-if="error" role="alert" class="error">{{ error }}</p>
-      <p v-else class="timestamp">Last updated {{ lastUpdated }}</p>
+      <div class="input-container">
+        <label for="usd-input">USD to invest</label>
+        <div class="usd-input-wrapper">
+          <span class="input-prefix">$</span>
+          <input
+            class="usd-input"
+            v-model="usd"
+            id="usd-input"
+            type="number"
+            min="0"
+            placeholder="0"
+          />
+        </div>
+      </div>
 
-      <button @click="fetchRates" :disabled="isLoading">
-        {{ isLoading ? 'Refreshing' : 'Refresh rates' }}
-      </button>
-    </div>
+      <div class="status-container">
+        <p v-if="error" role="alert" class="timestamp error">{{ error }}</p>
+        <p v-else-if="isLoading && !lastUpdated" class="timestamp">Loading rates...</p>
+        <p v-else class="timestamp">Rates last updated at {{ lastUpdated }}</p>
+        <button @click="fetchRates" :disabled="isLoading" class="refresh-button" type="button">
+          <span aria-hidden="true">⟳</span> {{ isLoading ? 'Refreshing' : 'Refresh rates' }}
+        </button>
+      </div>
 
-    <div class="crypto-container">
-      <CryptoItem
-        v-for="crypto in allocations"
-        :key="crypto.currency"
-        :currency="crypto.currency"
-        :ratio="crypto.ratio"
-        :usd-value="crypto.usdValue"
-        :coin-amount="crypto.coinAmount"
-      />
+      <ul class="crypto-container">
+        <CryptoItem
+          v-for="crypto in allocations"
+          :key="crypto.currency"
+          :currency="crypto.currency"
+          :ratio="crypto.ratio"
+          :usd-value="crypto.usdValue"
+          :coin-amount="crypto.coinAmount"
+        />
+      </ul>
     </div>
   </main>
 </template>
@@ -118,38 +121,68 @@ const allocations = computed(() => {
 <style scoped>
 main {
   width: 100%;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 48px 24px;
+}
+
+.col {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: var(--color-surface);
+  padding: 32px;
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  max-width: 600px;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 6px;
+}
+
+h1 {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--color-accent);
+}
+
+.header-container p {
+  font-size: 0.9rem;
 }
 
 .usd-input-wrapper {
   display: flex;
-  /* max-width: 10rem; */
   align-items: center;
   gap: 10px;
-  border: 1px solid grey;
-  padding: 1rem;
+  border: 1px solid var(--color-border);
+  padding: 14px;
   border-radius: 10px;
+  background: var(--color-bg);
 }
 
 .usd-input {
   background: transparent;
-  background: none;
   border: none;
-  font-size: 20px;
+  font-size: 1.3rem;
   outline: none;
-  color: white;
+  color: var(--color-text);
   width: 100%;
 }
 
 .input-prefix {
-  font-size: 20px;
+  font-size: 1.3rem;
 }
 
 .input-container {
-  border: 1px solid grey;
+  border: 1px solid var(--color-border);
   padding: 24px;
   border-radius: 14px;
   display: flex;
@@ -157,10 +190,62 @@ main {
   gap: 10px;
 }
 
-.crypto-container {
-  margin-top: 2rem;
+.input-container label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.status-container {
   display: flex;
-  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timestamp {
+  color: var(--color-accent);
+  font-size: 0.75rem;
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.refresh-button {
+  background: transparent;
+  color: var(--color-accent);
+  padding: 7px 12px;
+  border: 1px solid var(--color-accent);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  min-width: 120px;
+  cursor: pointer;
+}
+
+.refresh-button span {
+  font-size: 1rem;
+}
+
+.crypto-container {
+  list-style: none;
+  display: flex;
+  gap: 16px;
   justify-content: center;
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 0;
+  }
+
+  .status-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .crypto-container {
+    flex-direction: column;
+  }
 }
 </style>

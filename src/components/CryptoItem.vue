@@ -10,26 +10,64 @@ const props = defineProps<{
 }>()
 
 const coinDisplay = computed(() => (props.coinAmount === null ? '-' : formatCoin(props.coinAmount)))
-
-const percent = Math.round(props.ratio * 100)
-const usd = formatUsd(props.usdValue)
 </script>
 
 <template>
-  <div class="crypto-item">
-    <p>{{ currency }}</p>
-    <span>{{ percent }}</span>
-    <span>{{ usd }}</span>
-    <span>{{ coinDisplay }}</span>
-  </div>
+  <li class="crypto-item">
+    <div class="crypto-item-header">
+      <span class="currency">{{ currency }}</span>
+      <span class="ratio" :aria-label="`${Math.round(ratio * 100)} allocation percentage`"
+        >{{ Math.round(ratio * 100) }}%</span
+      >
+    </div>
+
+    <span class="currency-amt" :aria-label="`${coinDisplay} ${currency} to purchase`"
+      >{{ coinDisplay }} {{ currency }}</span
+    >
+    <span class="usd-amt" :aria-label="`${formatUsd(usdValue)} in USD`">{{
+      formatUsd(usdValue)
+    }}</span>
+  </li>
 </template>
 
 <style scoped>
 .crypto-item {
+  flex: 1;
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-accent);
+  border-radius: 14px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #bbcea8;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  gap: 8px;
+}
+
+.crypto-item-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.currency {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.ratio {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  background-color: var(--color-accent-surface);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.currency-amt {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.usd-amt {
+  font-size: 0.8rem;
+  color: var(--color-accent);
 }
 </style>
