@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AllocationCalculater from './components/AllocationCalculater.vue'
+import AllocationCalculater from './components/AllocationCalculator.vue'
 </script>
 
 <template><AllocationCalculater /></template>

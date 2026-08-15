@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { formatCoin, formatUsd } from '@/utils/format'
+import type { Currency } from '@/constants/cryptos'
 
 const props = defineProps<{
-  currency: string
+  currency: Currency
   ratio: number
   usdValue: number
   coinAmount: number | null

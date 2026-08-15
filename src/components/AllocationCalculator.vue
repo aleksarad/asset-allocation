@@ -3,13 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { formatTime } from '@/utils/format'
 import CryptoItem from './CryptoItem.vue'
 import { useDebounced } from '@/composables/useDebounced'
-
-const CRYPTOS = [
-  { currency: 'BTC', ratio: 0.7 },
-  { currency: 'ETH', ratio: 0.3 },
-] as const
-
-type Currency = (typeof CRYPTOS)[number]['currency'] // 'BTC' | 'ETH'
+import { CRYPTOS, type Currency } from '@/constants/cryptos'
 
 interface ExchangeRates {
   data: {
@@ -36,7 +30,7 @@ const fetchRates = async () => {
   error.value = null
   try {
     const res = await fetch('https://api.coinbase.com/v2/exchange-rates?currency=USD')
-    if (!res.ok) throw new Error(`Resquest failed with status ${res.status}`)
+    if (!res.ok) throw new Error(`Request failed with status ${res.status}`)
 
     const json: ExchangeRates = await res.json()
     rates.value = Object.fromEntries(
@@ -177,8 +171,14 @@ h1 {
   width: 100%;
 }
 
+.usd-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
 .input-prefix {
   font-size: 1.3rem;
+  line-height: 1;
 }
 
 .input-container {
